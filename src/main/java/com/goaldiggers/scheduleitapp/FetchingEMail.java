@@ -34,7 +34,7 @@ public class FetchingEMail {
             String host = "pop.outlook.com";
             Session session = Session.getDefaultInstance(properties);
             Store store = session.getStore("pop3s");
-            store.connect(host, 995, "username", "password");
+            store.connect(host, 995, "", "");
             System.out.println(session.toString());
 
             // create the folder object and open it
@@ -49,7 +49,7 @@ public class FetchingEMail {
             System.out.println("messages.length---" + messages.length);
 
             for (int i = 0; i < messages.length; i++) {
-            	PrintWriter writer = new PrintWriter("the-file-name-"+i+".txt", "UTF-8");
+            	PrintWriter writer = new PrintWriter(new File("D:\\MailMessages\\the-file-name-"+i+".txt"), "UTF-8");
                 Message message = messages[i];
                 System.out.println("---------------------------------");
                 writePart(message,writer);
@@ -94,7 +94,7 @@ public class FetchingEMail {
      */
     public static void writePart(Part p,PrintWriter writer) throws Exception {
         if (p instanceof Message) {
-            writeEnvelope((Message) p);
+            writeEnvelope((Message) p,writer);
         }
 
         System.out.println("----------------------------");
@@ -139,7 +139,7 @@ public class FetchingEMail {
     /*
      * This method would print FROM,TO and SUBJECT of the message
      */
-    public static void writeEnvelope(Message m) throws Exception {
+    public static void writeEnvelope(Message m,PrintWriter writer) throws Exception {
         System.out.println("This is the message envelope");
         System.out.println("---------------------------");
         Address[] a;
@@ -147,7 +147,7 @@ public class FetchingEMail {
         // FROM
         if ((a = m.getFrom()) != null) {
             for (int j = 0; j < a.length; j++) {
-                System.out.println("FROM: " + a[j].toString());
+            	writer.println("FROM: " + a[j].toString());
             }
         }
 
